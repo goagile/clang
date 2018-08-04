@@ -1,63 +1,115 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include "list.h"
 
+//
+// Список имеет ссылку на начальный узел и счетчик количества узлов
+//
+struct List {
+	Node* head;
+	int count;
+};
 
-typedef struct node {
-	char* name;
-	struct node* next;
-} node;
+//
+// Узел (Элемент) списка
+//
+struct Node {
+	char* value;
+	struct Node* next;
+};
 
-
-node* newlist(char* name) {
-	node* list = malloc(sizeof(node*));
-	list->name = name;
-	return list;
+//
+// Конструктор списка создает пустой список (с 0 элементов)
+//
+List* newlist() {
+	List* t = malloc(sizeof(List*));
+	t->head = NULL;
+	t->count = 0;
+	return t;
 }
 
-node* tail(node* start) {
-	node* n;
-	node* last = malloc(sizeof(node*));
-	for(n = start; n != NULL; n = n -> next) {
-		last = n;
-	}
-	return last;
+//
+// Конструктор узла создает узел с данными (строкой)
+// 
+Node* newnode(char* value) {
+	Node* n = malloc(sizeof(Node*));
+	n->value = value;
+	return n;
 }
 
-node* append(node* list, char* name) {
-	node* t = tail(list);
-	node* n = newlist(name);
-	t->next = n;
-	return list;
-}
-
-void printlist(node* start) {
-	node* n;
-	int i;
-	for (n = start, i = 0; n != NULL; n = n->next, i++) {
-		printf("%i: %s\n", i, n->name);
-	}
-}
-
-
-void freelist(node* start) {
-	node* n;
-	for (n = start; n != NULL; n = n->next) {
+//
+// Освобождение памяти, выделенной под список
+//
+void freelist(List* t) {
+	Node* n;
+	for (n = t->head; n != NULL; n = n->next) {
 		free(n);
 	}
+	free(t);
 }
 
+// 
+// Возвращает длину (количество элементов) списка 
+//
+int len(List* t) {
+	return t->count;
+}
+
+//
+// Возвращает TRUE если список пуст
+//
+bool isempty(List* t) {
+	return (0 == len(t));
+}
+
+//
+// Добавляет узел в начало списка и увеличивает счетчик длины
+//
+List* addhead(List* t, char* value) {
+	Node* n = newnode(value);
+	n->next = t->head;
+	t->head = n;
+	t->count += 1;
+	return t;
+}
+
+//
+// Печатает список со всеми элементами
+//
+void print(List* t) {
+	Node* n;
+	int i;
+	for (n = t->head, i = 0; n != NULL; n = n->next, i += 1) {
+		printf("%i: %s\n", i, n->value);
+	}
+}
 
 int main() {
-	node* langs = newlist("C");
-	langs = append(langs, "Python");
-	langs = append(langs, "Go");
-	langs = append(langs, "Lisp");
-	langs = append(langs, "Haskell");
-	langs = append(langs, "Erlang");
-	langs = append(langs, "Scala");
-	langs = append(langs, "Closure");
+	// Создаем новый односвязный список
+	List* langs = newlist();
 
-	printlist(langs);
+	// Печатаем первоночальное состояние списка
+	printf("\nСписок:\n");
+	printf("len: %i\n", len(langs));
+	printf("isempty: %s\n", (isempty(langs))? "TRUE":"FALSE");
+
+	// Заполняем списко элементами с начала
+	langs = addhead(langs, "Closure");
+	langs = addhead(langs, "Scala");
+	langs = addhead(langs, "Erlang");
+	langs = addhead(langs, "Haskell");
+	langs = addhead(langs, "Lisp");
+	langs = addhead(langs, "Go");
+	langs = addhead(langs, "Python");
+	langs = addhead(langs, "C");
+
+	printf("\nСписок:\n");
+	printf("len: %i\n", len(langs));
+	printf("isempty: %s\n", (isempty(langs))? "TRUE":"FALSE");	
+	print(langs);
+	
+	// Освобождаем память занятую списком
 	freelist(langs);
 	
 	return 0;
