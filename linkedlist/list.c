@@ -15,53 +15,50 @@ node* newlist(char* name) {
 }
 
 node* tail(node* start) {
-	node* i = start;
-	while (i != NULL) {
-		i = i->next;
+	node* n;
+	node* last = malloc(sizeof(node*));
+	for(n = start; n != NULL; n = n -> next) {
+		last = n;
 	}
-	return i;
+	return last;
 }
 
 node* append(node* list, char* name) {
-	node* n1 = newlist(name);
-	node* x = tail(list);
-	x->next = n1;
-	return x;
+	node* t = tail(list);
+	node* n = newlist(name);
+	t->next = n;
+	return list;
 }
 
 void printlist(node* start) {
-	node* i = start;
-	while (i != NULL) {
-		printf("next: %s\n", i->name);
-		i = i->next;
+	node* n;
+	int i;
+	for (n = start, i = 0; n != NULL; n = n->next, i++) {
+		printf("%i: %s\n", i, n->name);
 	}
 }
 
 
 void freelist(node* start) {
-	node* i = start;
-	while (i != NULL) {
-		free(i);
-		i = i->next;
+	node* n;
+	for (n = start; n != NULL; n = n->next) {
+		free(n);
 	}
 }
 
 
 int main() {
-	node* list = newlist("R");
-	// node* list = malloc(sizeof(node*));
-	// list->name = "R";
+	node* langs = newlist("C");
+	langs = append(langs, "Python");
+	langs = append(langs, "Go");
+	langs = append(langs, "Lisp");
+	langs = append(langs, "Haskell");
+	langs = append(langs, "Erlang");
+	langs = append(langs, "Scala");
+	langs = append(langs, "Closure");
 
-	append(list, "N1");
-	append(list, "N2");
-	
-	// node* n1 = malloc(sizeof(node*));
-	// n1->name = "N1";
-	// list->next = n1;
-
-	printlist(list);
-
-	freelist(list);
+	printlist(langs);
+	freelist(langs);
 	
 	return 0;
 }
