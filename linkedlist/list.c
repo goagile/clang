@@ -8,6 +8,7 @@
 //
 struct List {
 	Node* head;
+	Node* tail;
 	int count;
 };
 
@@ -25,6 +26,7 @@ struct Node {
 List* newlist() {
 	List* t = malloc(sizeof(List*));
 	t->head = NULL;
+	t->tail = NULL;
 	t->count = 0;
 	return t;
 }
@@ -35,6 +37,7 @@ List* newlist() {
 Node* newnode(char* value) {
 	Node* n = malloc(sizeof(Node*));
 	n->value = value;
+	n->next = NULL;
 	return n;
 }
 
@@ -70,6 +73,26 @@ List* addhead(List* t, char* value) {
 	Node* n = newnode(value);
 	n->next = t->head;
 	t->head = n;
+	if (t->count == 0) {
+		t->tail = n;
+	}
+	t->count += 1;
+	return t;
+}
+
+//
+// Добавляет узел в конец списка и увеличивает счетчик длины
+//
+List* addtail(List* t, char* value) {
+	Node* n = newnode(value);
+	if (t->count == 0) {
+		t->head = n;
+		t->tail = n;
+	} else {
+		Node* p = t->tail; 
+		p->next = n;
+		t->tail = p->next;
+	}
 	t->count += 1;
 	return t;
 }
@@ -87,30 +110,61 @@ void print(List* t) {
 
 int main() {
 	// Создаем новый односвязный список
-	List* langs = newlist();
+	List* a = newlist();
 
 	// Печатаем первоночальное состояние списка
 	printf("\nСписок:\n");
-	printf("len: %i\n", len(langs));
-	printf("isempty: %s\n", (isempty(langs))? "TRUE":"FALSE");
+	printf("len: %i\n", len(a));
+	printf("isempty: %s\n", (isempty(a))? "TRUE":"FALSE");
 
-	// Заполняем списко элементами с начала
-	langs = addhead(langs, "Closure");
-	langs = addhead(langs, "Scala");
-	langs = addhead(langs, "Erlang");
-	langs = addhead(langs, "Haskell");
-	langs = addhead(langs, "Lisp");
-	langs = addhead(langs, "Go");
-	langs = addhead(langs, "Python");
-	langs = addhead(langs, "C");
+	// Заполняем список элементами с начала
+	a = addhead(a, "Closure");
+	a = addhead(a, "Scala");
+	a = addhead(a, "Erlang");
+	a = addhead(a, "Haskell");
+	a = addhead(a, "Lisp");
+	a = addhead(a, "Go");
+	a = addhead(a, "Python");
+	a = addhead(a, "C");
+
+	printf("a->head->value: %s\n", a->head->value);
+	printf("a->tail->value: %s\n", a->tail->value);
 
 	printf("\nСписок:\n");
-	printf("len: %i\n", len(langs));
-	printf("isempty: %s\n", (isempty(langs))? "TRUE":"FALSE");	
-	print(langs);
+	printf("len: %i\n", len(a));
+	printf("isempty: %s\n", (isempty(a))? "TRUE":"FALSE");	
+	
+	print(a);
 	
 	// Освобождаем память занятую списком
-	freelist(langs);
-	
+	freelist(a);
+
+
+	// ------------------------------------------------
+
+	List* b = newlist();
+
+	// Печатаем первоночальное состояние списка
+	printf("\nСписок b:\n");
+	printf("len: %i\n", len(b));
+	printf("isempty: %s\n", (isempty(b))? "TRUE":"FALSE");
+
+	b = addtail(b, "C");
+	b = addtail(b, "Python");
+	b = addtail(b, "Go");
+	b = addtail(b, "Lisp");
+	b = addtail(b, "Haskell");
+	b = addtail(b, "Erlang");
+	b = addtail(b, "Scala");
+	b = addtail(b, "Closure");
+
+	printf("\nСписок b:\n");
+	printf("len: %i\n", len(b));
+	printf("isempty: %s\n", (isempty(b))? "TRUE":"FALSE");
+
+	print(b);
+
+	freelist(b);
+
 	return 0;
 }

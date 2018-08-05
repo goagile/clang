@@ -18,4 +18,6 @@ bool isempty(List* t);
 
 List* addhead(List* t, char* value);
 
+List* addtail(List* t, char* value);
+
 void print(List* t);
