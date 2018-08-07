@@ -98,6 +98,19 @@ List* addtail(List* t, char* value) {
 }
 
 //
+// Проверяет находится ли элемент в списке
+//
+bool hasitem(List* t, char* item) {
+	Node* n;
+	for (n = t->head; n != NULL; n = n->next) {
+		if (n->value == item) {
+			return true;
+		}
+	}
+	return false;
+}
+
+//
 // Печатает список со всеми элементами
 //
 void print(List* t) {
@@ -160,7 +173,13 @@ int main() {
 
 	printf("\nСписок b:\n");
 	printf("len: %i\n", len(b));
-	printf("isempty: %s\n", (isempty(b))? "TRUE":"FALSE");
+	printf("isempty: %s\n", (isempty(b))? "TRUE": "FALSE");
+	
+	bool n = hasitem(b, "Haskell");
+	printf("hasitem Haskell: %s\n", n? "TRUE": "FALSE");
+
+	bool m = hasitem(b, "Kotlin");
+	printf("hasitem Kotlin: %s\n", m? "TRUE": "FALSE");
 
 	print(b);
 
