@@ -111,6 +111,34 @@ bool hasitem(List* t, char* item) {
 }
 
 //
+// Возвращает новый список с элементами в обратном порядке
+//
+List* reversed(List* t) {
+	List* res = newlist();
+	Node* n;
+	for (n = t->head; n != NULL; n = n->next) {
+		res = addhead(res, n->value);
+	}
+	return res;
+}
+
+//
+// Разворачивает список 'на месте'
+//
+void reverse(List* t) {
+	Node* curr = t->head;
+	Node* next = NULL;
+	Node* prev = NULL;
+	while (curr != NULL) {
+		next = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = next;
+	}
+	t->head = prev;
+}
+
+//
 // Печатает список со всеми элементами
 //
 void print(List* t) {
@@ -140,13 +168,10 @@ int main() {
 	a = addhead(a, "Python");
 	a = addhead(a, "C");
 
-	printf("a->head->value: %s\n", a->head->value);
-	printf("a->tail->value: %s\n", a->tail->value);
-
+	// Печатаем список после добавления элементов
 	printf("\nСписок:\n");
 	printf("len: %i\n", len(a));
 	printf("isempty: %s\n", (isempty(a))? "TRUE":"FALSE");	
-	
 	print(a);
 	
 	// Освобождаем память занятую списком
@@ -171,10 +196,14 @@ int main() {
 	b = addtail(b, "Scala");
 	b = addtail(b, "Closure");
 
+	// Печатаем список после добавления элементов
 	printf("\nСписок b:\n");
 	printf("len: %i\n", len(b));
 	printf("isempty: %s\n", (isempty(b))? "TRUE": "FALSE");
 	
+	// ------------------------------------------------
+	
+	// Проверяем находится ли элемент в списке
 	bool n = hasitem(b, "Haskell");
 	printf("hasitem Haskell: %s\n", n? "TRUE": "FALSE");
 
@@ -182,6 +211,20 @@ int main() {
 	printf("hasitem Kotlin: %s\n", m? "TRUE": "FALSE");
 
 	print(b);
+
+	// ------------------------------------------------
+	
+	// Получаем новый список с элементами в обратном порядке
+	List* c = reversed(b);
+	printf("\nreversed b = c: \n");
+	print(c);
+	
+	// Разворачиваем список 'на месте'
+	reverse(c);
+	printf("\nreverse c: \n");
+	print(c);
+	
+	freelist(c);
 
 	freelist(b);
 
