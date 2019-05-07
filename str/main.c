@@ -1,9 +1,7 @@
 # include <stdio.h>
 # include "mystr.h"
 
-void main() {
-    printf("str copy program:\n");
-    
+void main() {   
     char from[] = "hello";
     int from_count = strcount(from);
 
