@@ -1,6 +1,6 @@
 # ASM
 
-## Assemble and Link
+## Assembly and Linkage
 
 Assembler `/usr/bin/as`
 Linker `/usr/bin/ld`
@@ -69,6 +69,8 @@ list:
 ```s
 
 .section .text
+hello:
+    .ascii "hello\0"
 
 ```
 
@@ -87,11 +89,11 @@ _start:
 
 ## Types
 
-`.byte`  - 1 storage location [0-255]  
+`.byte`  - 1 storage location [0-255] `byte`
 
-`.int`   - 2 storage location [0-65535]
+`.int`   - 2 storage location [0-65535] `double-byte`
 
-`.long`  - 4 storage locatons [0-4294967295]
+`.long`  - 4 storage locatons [0-4294967295] `word`
 
 ```s
 
@@ -112,6 +114,89 @@ hello:
     .ascii "hello\0"
     # 'h', 'e', 'l', 'l', 'o', '\0' = 6 bytes
     # 6 numeric codes, one for each character
+
+```
+
+## Memory Addressing
+
+```s
+
+ADDRESS(%OFFSET,%INDEX,MULTIPLIER)
+
+FINAL = ADDRESS + %OFFSET + %INDEX * MULTIPLIER
+
+```
+
+### direct addressing
+
+load value at memory address `ADDRESS`
+to register `%eax`
+
+```s
+
+movl ADDRESS, %eax
+
+```
+
+### indexed addressing mode
+
+move 1 byte from string_start to %ebx register
+
+`MULTIPLIER = 1 | 2 | 4`
+
+`final = string_start + %eax * 1`
+
+```s
+
+movl string_start(,%eax,1), %ebx
+
+```
+
+### indirect addressing mode
+
+move value from memory by address `%eax` to register `%ebx`
+
+```s
+
+movl (%eax), %ebx
+
+```
+
+### base pointer addressing mode
+
+Move `N` bytes from address `%eax` to register `%ebx`
+
+```s
+
+movl 1(%eax), %ebx
+movl 2(%eax), %ebx
+movl 4(%eax), %ebx
+
+```
+
+### immediate addressing mode
+
+Move constant value 12 (decimal) into `%eax` register
+
+```s
+
+movl $12, %eax
+
+```
+
+Move value by address `12` into `%eax` register
+
+```s
+
+movl 12, %eax
+
+```
+
+### register addressing mode
+
+```s
+
+movl %eax, %ebx
 
 ```
 
