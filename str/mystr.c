@@ -14,3 +14,11 @@ void strcp(char* from, char* to, int n) {
     }
     to[n] = '\0';
 }
+
+void strcat(char* a, char* b, char* z) {
+    int a_count = strcount(a);
+    int b_count = strcount(b);
+    int n = a_count + b_count + 1;
+
+    return r;
+}
