@@ -53,6 +53,13 @@ Additional registers
 
 `%eflags`
 
+Portions
+
+`%eax` 4 bytes
+`%ax`  2 bytes
+`%ah`  1 byte
+`%al`  1 byte
+
 ## Section Data
 
 ```s
@@ -204,6 +211,14 @@ movl %eax, %ebx
 
 ### Move
 
+`movl`
+Move long.
+Move word at time.
+
+`movb`
+Move byte.
+Move byte at time.
+
 ```s
 
 movl %eax, %ebx
@@ -324,3 +339,79 @@ Out from GDB
 (gdb) quit
 
 ```
+
+## Functions
+
+### Function Execute
+
+Before function call
+we need to push function arguments to the stack
+
+```c
+
+int add(int a, int b);
+
+```
+
+Stack:
+
+- int b
+- int a
+- return address <- `%esp`
+
+### Top of the Stack
+
+Move top of the stack value to `%eax` register
+
+```s
+
+movl (%esp), %eax
+
+```
+
+Move top+1 stack value to `%eax` register
+
+```s
+
+movl 4(%esp), %eax
+
+```
+
+### Registers
+
+`%eip` instruction pointer (point to the start of the function)
+`%esp` top of the stack address
+`%ebp` base pointer register using to access function parameters and local variables
+
+### Store address of the function
+
+Move current stack top to base pointer
+
+```s
+
+movl %esp, %ebp
+
+```
+
+Push base pointer onto stack
+
+```s
+
+pushl %ebp
+
+```
+
+Stack-frame:
+
+- Parameter n    `n*4 + 4(%ebp)`
+- ...
+- Parameter 2    `12(%ebp)`
+- Parameter 1    `8(%ebp)`
+- Return address `4(%ebp)`
+- Old `%ebp`     `(%ebp)` and `(%esp)`
+
+## Call
+
+`pushl`
+`popl`
+`call`
