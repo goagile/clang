@@ -292,54 +292,6 @@ int $0x80
 
 ```
 
-## Debugger GDB
-
-### Start GDB
-
-Assemple, Link and run GDB
-
-```bash
-
-as --gstabs max.s -o ./bin/max.o
-ld ./bin/max.o -o ./bin/max
-gdb ./bin/max
-
-```
-
-Run program
-
-```bash
-
-(gdb) run
-
-```
-
-### Instructions
-
-Step-by-Step instructions
-
-```bash
-
-(gdb) stepi
-
-```
-
-Print register
-
-```bash
-
-(gdb) print/d $eax
-
-```
-
-Out from GDB
-
-```bash
-
-(gdb) quit
-
-```
-
 ## Functions
 
 ### Function Execute
@@ -415,3 +367,126 @@ Stack-frame:
 `pushl`
 `popl`
 `call`
+
+
+## Debugger GDBs
+
+### Start GDB
+
+Assemple, Link and run GDB
+
+```bash
+
+as --gstabs max.s -o ./bin/max.o
+ld ./bin/max.o -o ./bin/max
+gdb ./bin/max
+
+```
+
+#### Out from GDB
+
+```bash
+
+(gdb) quit
+
+```
+
+#### Set Breakpoint
+
+```bash
+
+(gdb) break 12
+
+```
+
+#### Run program
+
+```bash
+
+(gdb) run
+
+```
+
+#### All breakpoints
+
+```bash
+
+(gdb) info breakpoints
+
+```
+
+#### All registers
+
+```bash
+
+(gdb) info registers
+
+```
+
+#### Print register
+
+```bash
+
+(gdb) print/d $eax # decimal
+(gdb) print/f $eax # float
+(gdb) print/h $eax # hex
+(gdb) print/o $eax # octo
+(gdb) print/u $eax # unsigned decimal
+(gdb) print/a $eax # address
+(gdb) print/c $eax # character
+
+```
+
+#### Print memory
+
+Size
+
+```bash
+
+(gdb) x/b $eax # byte
+(gdb) x/h $eax # half word
+(gdb) x/w $eax # word
+(gdb) x/g $eax # double word
+
+```
+
+Format
+
+```bash
+
+(gdb) x/s $eax # string
+(gdb) x/i $eax # instruction
+
+```
+
+#### Step-by-Step instructions
+
+```bash
+
+(gdb) stepi
+
+```
+
+#### Next instruction
+
+```bash
+
+(gdb) nexti
+
+```
+
+#### Where are you now
+
+```bash
+
+(gdb) where
+
+```
+
+#### Frame
+
+```bash
+
+(gdb) info frame
+
+```
