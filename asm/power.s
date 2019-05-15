@@ -28,14 +28,14 @@ _start:
     # -4:| 3    |
     # -8:| 2    | 
 
-    push %rax   # save first answer
+    # push %rax   # save first answer
     # stack:
     #  0:| .    | 
     # -4:| %eax | <-%esp
     # -8:| 2    | 
 
+    mov %rax, %rbx
     mov $1, %rax
-    mov $0, %rbx
     int $0x80
 
 .type power, @function
@@ -56,27 +56,27 @@ power:
     
     push %rbp       # return address ?
     # stack:
-    #   0:| .    |
-    #  -4:| 3    |
-    #  -8:| 2    | 
-    # -12:| %rbp | <-%rsp
+    #   0:| .        |
+    #  -4:| 3        |
+    #  -8:| 2        | 
+    # -12:| %old_rbp | <-%rsp
 
     mov %rsp, %rbp
     # %rbp: -12
 
     # stack:
-    #   0:| .    |
-    #  -4:| 3    |
-    #  -8:| 2    | 
-    # -12:| %rbp | <-%rsp <-%rbp
+    #   0:| .        |
+    #  -4:| 3        |
+    #  -8:| 2        | 
+    # -12:| %old_rbp | <-%rsp <-%rbp
 
     sub $4, %rsp    # local storage
     # stack:
-    #   0:| .    |
-    #  -4:| 3    |
-    #  -8:| 2    | 
-    # -12:| %rbp | <-%rbp
-    # -16:|      | <-%rsp
+    #   0:| .        |
+    #  -4:| 3        |
+    #  -8:| 2        | 
+    # -12:| %old_rbp | <-%rbp
+    # -16:|          | <-%rsp
 
     mov 8(%rbp), %rbx
     # power
@@ -88,10 +88,45 @@ power:
 
     mov %rcx, -4(%rbp)
     # stack:
-    #   0:| .    |
-    #  -4:| 3    |
-    #  -8:| 2    | 
-    # -12:| %rbp | <-%rbp
-    # -16:| 2    | <-%rsp
+    #   0:| .        |
+    #  -4:| 3        |
+    #  -8:| 2        | 
+    # -12:| %old_rbp | <-%rbp
+    # -16:| 2        | <-%rsp
 
-#power_loop:
+power_loop:
+    cmp $1, %rax    # if tmp == 1 return
+    je power_end
+
+    mov -4(%rbp), %rax
+    # %rax: 2
+
+    imul %rbx, %rax
+    # %rax: 3*2=6
+
+    mov %rax, -4(%ebp)
+    # stack:
+    #   0:| .        |
+    #  -4:| 3        |
+    #  -8:| 2        |
+    # -12:| %old_rbp | <-%rbp
+    # -16:| 2        | <-%rsp
+
+    dec %rcx
+    jmp power_loop
+
+power_end:
+    mov -4(%rbp), %rax
+    
+    mov %rbp, %rsp
+    # stack:
+    #   0:| .        |
+    #  -4:| 3        |
+    #  -8:| 2        | 
+    # -12:| %old_rbp | <-%rbp <-%rsp
+    # -16:| resl     | 
+
+    pop %rbp
+    # %rbp: %old_rbp
+
+    ret
