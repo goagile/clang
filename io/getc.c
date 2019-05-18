@@ -1,15 +1,20 @@
 # include <stdio.h>
-# include <stdlib.h>
 
 int main() {
     
-    printf("putc, getc example:\n");
-    const char a = 'A';
-    printf("a=");
-    putc(a, stdin);
+    printf("getc example, read 5 char from stdin:\n");
 
-    char b = getc(stdin);
-    printf("b='%c'\n", b);
+    char s[6];
+
+    s[0] = getc(stdin);
+    s[1] = getc(stdin);
+    s[2] = getc(stdin);
+    s[3] = getc(stdin);
+    s[4] = getc(stdin);
+    s[5] = '\0';
+
+    printf("read chars s='%s'\n", s);
     
-    exit(0);
+    return 0;
+
 }
