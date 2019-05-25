@@ -6,15 +6,14 @@ int main() {
 
     char s[6];
 
-    s[0] = getc(stdin);
-    s[1] = getc(stdin);
-    s[2] = getc(stdin);
-    s[3] = getc(stdin);
-    s[4] = getc(stdin);
+    s[0] = fgetc(stdin);
+    s[1] = fgetc(stdin);
+    s[2] = fgetc(stdin);
+    s[3] = fgetc(stdin);
+    s[4] = fgetc(stdin);
     s[5] = '\0';
 
     printf("read chars s='%s'\n", s);
     
     return 0;
-
 }
