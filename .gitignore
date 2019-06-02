@@ -4,3 +4,6 @@ bin
 .vscode
 **/.vscode/**
 std
+
+**/*.out
+alg-n-datastruct/x2arr
