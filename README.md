@@ -1,10 +1,2 @@
 
-# Help
-
-## Terminal EOF
-
-```bash
-
-    Ctrl+D
-
-```
+### Help C lang
